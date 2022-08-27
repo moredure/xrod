@@ -176,6 +176,26 @@ func (p *Page) Navigate(url string) error {
 	return nil
 }
 
+// NavigateNonStop to the url. If the url is empty, "about:blank" will be used.
+// It will return immediately after the server responds the http header.
+func (p *Page) NavigateNonStop(url string) error {
+	if url == "" {
+		url = "about:blank"
+	}
+
+	res, err := proto.PageNavigate{URL: url}.Call(p)
+	if err != nil {
+		return err
+	}
+	if res.ErrorText != "" {
+		return &ErrNavigation{res.ErrorText}
+	}
+
+	p.root.unsetJSCtxID()
+
+	return nil
+}
+
 // NavigateBack history.
 func (p *Page) NavigateBack() error {
 	// Not using cdp API because it doesn't work for iframe
