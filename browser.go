@@ -304,7 +304,7 @@ func (b *Browser) PageFromTarget(targetID proto.TargetTargetID) (*Page, error) {
 
 	// If we don't enable it, it will cause a lot of unexpected browser behavior.
 	// Such as proto.PageAddScriptToEvaluateOnNewDocument won't work.
-	page.EnableDomain(&proto.PageEnable{})
+	//page.EnableDomain(&proto.PageEnable{})
 
 	return page, nil
 }
