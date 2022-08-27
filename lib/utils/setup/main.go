@@ -1,0 +1,32 @@
+// Package main ...
+package main
+
+import (
+	"log"
+	"os/exec"
+
+	"github.com/moredure/xrod/lib/utils"
+)
+
+func main() {
+	log.Println("setup project...")
+
+	nodejsDeps()
+
+	genDockerIgnore()
+}
+
+func nodejsDeps() {
+	_, err := exec.LookPath("npm")
+	if err != nil {
+		log.Fatalln("please install Node.js: https://nodejs.org")
+	}
+
+	utils.Exec("npm i -s eslint-plugin-html")
+}
+
+func genDockerIgnore() {
+	s, err := utils.ReadString(".gitignore")
+	utils.E(err)
+	utils.E(utils.OutputFile(".dockerignore", s))
+}
